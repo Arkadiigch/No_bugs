@@ -3,14 +3,13 @@ package org.example;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.example.api.UnicornRequests;
+import org.example.api.models.Unicorn;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasKey;
 
 public class SimpleTest {
     @BeforeAll
@@ -22,7 +21,8 @@ public class SimpleTest {
     @Test
     public void userShouldBeAbleToCreateAUnicornEntity(){
         // Создание сущности Unicorn
-        String id = UnicornRequests.createUnicorn("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}");
+        Unicorn unicorn = new Unicorn("Troi","Yellow");
+        String id = UnicornRequests.createUnicorn(unicorn.toJson());
         // Проверка того, что она создалась
         given()
                 .get("/unicorn/" + id)
@@ -33,7 +33,8 @@ public class SimpleTest {
     @Test
     public void userShouldBeAbleDeleteExistingUnicorn(){
         // Создание сущности Unicorn
-        String id = UnicornRequests.createUnicorn("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}");
+        Unicorn unicorn = new Unicorn("Pony","Pink");
+        String id = UnicornRequests.createUnicorn(unicorn.toJson());
         // Удаление
         UnicornRequests.deleteUnicorn(id);
         // Проверка того, что она удалилась
@@ -46,9 +47,11 @@ public class SimpleTest {
     @Test
     public void TheUserShouldBeFbleToChangeTheTailColorOfAnExistingUnicorn(){
         // Создание сущности Unicorn
-        String id = UnicornRequests.createUnicorn("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}");
+        Unicorn unicorn = new Unicorn("Pony","Pink");
+        String id = UnicornRequests.createUnicorn(unicorn.toJson());
         // Замена цвета хвоста
-        UnicornRequests.updateUnicorn(id,"{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Green\" \n" + "}");
+        unicorn.setTailColor("Green");
+        UnicornRequests.updateUnicorn(id, unicorn.toJson());
         // Проверка того, что цвет поменялась
         given()
                 .get("/unicorn/" + id)

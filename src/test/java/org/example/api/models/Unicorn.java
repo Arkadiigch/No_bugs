@@ -9,6 +9,15 @@ public class Unicorn {
         this.tailColor = tailColor;
     }
 
+
+    public void setTailColor(String newColor) {
+        this.tailColor = newColor;
+    }
+
+    public String toJson(){
+        return "{\"name\":\"" + name + "\",\"tailColor\":\"" + tailColor + "\"}";
+    }
+
     public String getName() {
         return name;
     }
