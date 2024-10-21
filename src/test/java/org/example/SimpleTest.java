@@ -5,6 +5,7 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
+import org.example.api.UnicornRequests;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -15,23 +16,13 @@ public class SimpleTest {
     @BeforeAll
     public static void setupTests(){
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
-        RestAssured.baseURI = "https://crudcrud.com/api/b3b98b66db2f44708ada38b4fec751da";
+        RestAssured.baseURI = "https://crudcrud.com/api/260345913c4d4f85acc92e1a7ad6fe9d";
     }
 
     @Test
     public void userShouldBeAbleToCreateAUnicornEntity(){
         // Создание сущности Unicorn
-        String id =given()
-                .body("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}")
-                .contentType(ContentType.JSON)
-        .when()
-                .post("/unicorn")
-        .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_CREATED)
-                .body("$", hasKey("_id"))
-        .extract()
-                .path("_id");
+        String id = UnicornRequests.createUnicorn("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}");
         // Проверка того, что она создалась
         given()
                 .get("/unicorn/" + id)
@@ -42,23 +33,9 @@ public class SimpleTest {
     @Test
     public void userShouldBeAbleDeleteExistingUnicorn(){
         // Создание сущности Unicorn
-        String id =given()
-                .body("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}")
-                .contentType(ContentType.JSON)
-        .when()
-                .post("/unicorn")
-        .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_CREATED)
-                .body("$", hasKey("_id"))
-        .extract()
-                .path("_id");
+        String id = UnicornRequests.createUnicorn("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}");
         // Удаление
-        given().delete("/unicorn/" + id)
-        .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_OK);
-
+        UnicornRequests.deleteUnicorn(id);
         // Проверка того, что она удалилась
         given()
                 .get("/unicorn/" + id)
@@ -69,25 +46,9 @@ public class SimpleTest {
     @Test
     public void TheUserShouldBeFbleToChangeTheTailColorOfAnExistingUnicorn(){
         // Создание сущности Unicorn
-        String id =given()
-                .body("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}")
-                .contentType(ContentType.JSON)
-        .when()
-                .post("/unicorn")
-        .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_CREATED)
-                .body("$", hasKey("_id"))
-                .extract()
-                .path("_id");
+        String id = UnicornRequests.createUnicorn("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Blue\" \n" + "}");
         // Замена цвета хвоста
-        given()
-                .body("{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Gren\" \n" + "}")
-                .contentType(ContentType.JSON)
-                .put("/unicorn/" + id)
-        .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_OK);
+        UnicornRequests.updateUnicorn(id,"{\n" + "  \"name\": \"Rainbow\",\n" + "  \"tailColor\": \"Green\" \n" + "}");
         // Проверка того, что цвет поменялась
         given()
                 .get("/unicorn/" + id)
