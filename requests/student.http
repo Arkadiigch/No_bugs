@@ -1,0 +1,16 @@
+DELETE https://crudcrud.com/api/b3b98b66db2f44708ada38b4fec751da/student/670cf929a0a8cd03e818a7da
+Accept: application/json
+
+###
+GET https://crudcrud.com/api/b3b98b66db2f44708ada38b4fec751da/student/670cf929a0a8cd03e818a7da
+Accept: application/json
+
+###
+POST http://crudcrud.com/api/b3b98b66db2f44708ada38b4fec751da/student
+Content-Type: application/json
+
+{
+  "name": "Аркадич Пуков",
+  "grade": 2
+}
+###
