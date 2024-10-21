@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import org.apache.http.HttpStatus;
+import org.example.HW1.Student.Student;
 import org.example.api.UnicornRequests;
 import org.example.api.models.Unicorn;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,10 +23,10 @@ public class SimpleTest {
     public void userShouldBeAbleToCreateAUnicornEntity(){
         // Создание сущности Unicorn
         Unicorn unicorn = new Unicorn("Troi","Yellow");
-        String id = UnicornRequests.createUnicorn(unicorn.toJson());
+        Unicorn createUnicorn = UnicornRequests.createUnicorn(unicorn);
         // Проверка того, что она создалась
         given()
-                .get("/unicorn/" + id)
+                .get("/unicorn/" + createUnicorn.getId())
         .then()
                 .assertThat()
                 .statusCode(200);
@@ -34,12 +35,12 @@ public class SimpleTest {
     public void userShouldBeAbleDeleteExistingUnicorn(){
         // Создание сущности Unicorn
         Unicorn unicorn = new Unicorn("Pony","Pink");
-        String id = UnicornRequests.createUnicorn(unicorn.toJson());
+        Unicorn createUnicorn = UnicornRequests.createUnicorn(unicorn);
         // Удаление
-        UnicornRequests.deleteUnicorn(id);
+        UnicornRequests.deleteUnicorn(createUnicorn.getId());
         // Проверка того, что она удалилась
         given()
-                .get("/unicorn/" + id)
+                .get("/unicorn/" + createUnicorn.getId())
         .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
@@ -48,13 +49,13 @@ public class SimpleTest {
     public void TheUserShouldBeFbleToChangeTheTailColorOfAnExistingUnicorn(){
         // Создание сущности Unicorn
         Unicorn unicorn = new Unicorn("Pony","Pink");
-        String id = UnicornRequests.createUnicorn(unicorn.toJson());
+        Unicorn createUnicorn = UnicornRequests.createUnicorn(unicorn);
         // Замена цвета хвоста
         unicorn.setTailColor("Green");
-        UnicornRequests.updateUnicorn(id, unicorn.toJson());
+        UnicornRequests.updateUnicorn(createUnicorn.getId(), unicorn);
         // Проверка того, что цвет поменялась
         given()
-                .get("/unicorn/" + id)
+                .get("/unicorn/" + createUnicorn.getId())
         .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK);

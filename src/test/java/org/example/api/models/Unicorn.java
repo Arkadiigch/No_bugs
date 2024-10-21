@@ -1,8 +1,12 @@
 package org.example.api.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Unicorn {
     private String name;
     private String tailColor;
+    @SerializedName("_id")
+    private String id;
 
     public Unicorn(String name, String tailColor) {
         this.name = name;
@@ -14,9 +18,6 @@ public class Unicorn {
         this.tailColor = newColor;
     }
 
-    public String toJson(){
-        return "{\"name\":\"" + name + "\",\"tailColor\":\"" + tailColor + "\"}";
-    }
 
     public String getName() {
         return name;
@@ -24,5 +25,9 @@ public class Unicorn {
 
     public String getTailColor() {
         return tailColor;
+    }
+
+    public String getId() {
+        return id;
     }
 }
