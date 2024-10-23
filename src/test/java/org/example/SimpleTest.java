@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import org.apache.http.HttpStatus;
+import org.example.HW1.Student.Student;
 import org.example.api.UnicornRequests;
 import org.example.api.models.Unicorn;
 import org.junit.jupiter.api.BeforeAll;
