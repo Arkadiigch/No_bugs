@@ -35,7 +35,16 @@ public class RegisterAccountPage {
     SelenideElement registerButton = element(Selectors.byValue("Register"));
 
     // Ошибки
-    SelenideElement addressError = element(Selectors.byId("customer.address.street.errors"));
+    SelenideElement firstNameError = element(Selectors.byId("customer.firstName.errors"));
+    SelenideElement lastNameError = element(Selectors.byId("customer.lastName.errors"));
+    SelenideElement addressStreetError = element(Selectors.byId("customer.address.street.errors"));
+    SelenideElement addressCityError = element(Selectors.byId("customer.address.city.errors"));
+    SelenideElement addressStateError = element(Selectors.byId("customer.address.state.errors"));
+    SelenideElement zipcodeError = element(Selectors.byId("customer.address.zipCode.errors"));
+    SelenideElement ssnError = element(Selectors.byId("customer.ssn.errors"));
+    SelenideElement usernameError = element(Selectors.byId("customer.username.errors"));
+    SelenideElement passwordError = element(Selectors.byId("customer.password.errors"));
+    SelenideElement confirmPasswordError = element(Selectors.byId("repeatedPassword.errors"));
 
     public static void open(){
         Selenide.open("https://parabank.parasoft.com/parabank/register.htm");
